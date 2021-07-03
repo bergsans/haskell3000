@@ -1,0 +1,91 @@
+@media screen and (min-width: 1850px) {
+  .container {
+    display:contents;
+  }
+  .only-desktop-error {
+    display: none;
+  }
+}
+@media screen and (max-width: 1849px) {
+  .container {
+    display: none;
+  }
+  .only-desktop-error {
+    display: contents;
+  }
+}
+@font-face {
+  font-family: 'tinypixel';
+  src: url(./assets/tinypixel.otf);
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #2e3440;
+}
+p {
+  font-family: tinypixel;
+  font-size: 20px;
+  color: #bf616a;
+  background-color: #2e3440;
+  text-align: center;
+}
+button {
+  outline: none;
+  padding: 0;
+  text-align: center;
+  border: 0;
+  border-bottom: 5px solid #bf616a;
+  font-family: tinypixel;
+  font-size: 20px;
+  color: #bf616a;
+  background-color: #2e3440;
+}
+button:hover {
+  border-bottom: 6px solid #5e81ac;
+  cursor: pointer;
+}
+button:hover::before {
+  content: '>';
+  position: relative;
+}
+canvas {
+  cursor: pointer;
+}
+.container {
+  width: 1850px;
+  height: 800px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: row;
+}
+.app {
+  width: 1900px;
+  height: 800px;
+}
+.left-arrow {
+  cursor: pointer;
+  width: 64px;
+  float: left;
+  margin-top: 10px;
+}
+.right-arrow {
+  cursor: pointer;
+  width: 64px;
+  float: right;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+.editor {
+  display: flex;
+  flex-direction: row;
+}
+.canvas {
+  border: 10px double #bf616a;
+}
+.tiles {
+  height: 460px;
+  width: 768px;
+  margin-left: 15px;
+  border: 10px double #bf616a;
+}
