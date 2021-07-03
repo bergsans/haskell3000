@@ -1,4 +1,4 @@
-import { ImagePosition, Vector2dLevel } from "./interfaces";
+import { Level, ImagePosition, Vector2dLevel } from "./interfaces";
 import graphicsSource from "./assets/ap1b_tileset_compact2.png";
 
 export function getGraphics() {
@@ -54,7 +54,7 @@ export function initLevel(
   w: number = 1024 * 2,
   h: number = 768,
   tileSize: number = 48
-): string[][] {
+): Level {
   return Array.from({ length: h / tileSize }, (_) =>
     Array.from({ length: w / tileSize }, (__) => "13")
   );
@@ -88,17 +88,21 @@ export function drawLevel(
   );
 }
 
-export function saveLevelToFile(level) {
+export function saveLevelToFile(level: Level, fileName: string) {
   const a = document.createElement("a");
   const asText = level
     .map((ln) => ln.map((el) => parseInt(el, 10)).join(","))
     .join("\n");
   const file = new Blob([asText], { type: "text/json" });
   a.href = URL.createObjectURL(file);
-  a.download = "x.level";
+  a.download = fileName;
   a.click();
 }
 
-export function getSheet(sheet, direction, spriteCounter): ImagePosition {
+export function getSheet(
+  sheet: ImagePosition,
+  direction: keyof ImagePosition,
+  spriteCounter: number
+): ImagePosition {
   return sheet[direction][spriteCounter];
 }

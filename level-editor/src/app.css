@@ -52,6 +52,27 @@ button:hover::before {
 canvas {
   cursor: pointer;
 }
+input {
+  margin: 5px 10px;
+  border: 0;
+  background-color: #2e3440;
+  outline: none;
+  font-family: tinypixel;
+  font-size: 16px;
+  width: 150px;
+  color: white;
+  border-bottom: 5px solid #bf616a;
+}
+input:focus {
+  border-bottom: 5px solid #5e81ac;
+}
+.separator {
+  position: relative;
+  font-size: 200%;
+  top: 12px;
+  margin-left: 10px;
+  color: #5e81ac;
+}
 .container {
   width: 1850px;
   height: 800px;

@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import Tiles from "./level-editor-display-tiles";
 import Level from "./level-editor-display-level";
-import { TileSelected, Vector2dLevel, ImagePosition } from "./interfaces";
+import {
+  ModifyLevelFn,
+  TileSelected,
+  ChooseTileFn,
+  Vector2dLevel,
+  ImagePosition,
+} from "./interfaces";
 import {
   saveLevelToFile,
   initLevel,
@@ -35,8 +41,13 @@ const LevelEditor = () => {
   const tiles: ImagePosition[][] = getTiles(768, 384, tileSize);
   const types: object = getTypes(tiles);
 
-  const [isLoadingAssets, setIsLoadingAssets] = useState(true);
-  const [selectedTile, setSelectedTile] = useState({ x: 4, y: 0, type: "4" });
+  const [isLoadingAssets, setIsLoadingAssets] = useState<boolean>(true);
+  const [fileName, setFilename] = useState<string>("");
+  const [selectedTile, setSelectedTile] = useState<TileSelected>({
+    x: 4,
+    y: 0,
+    type: "4",
+  });
   const [level, setLevel] = useState(initLevel());
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
@@ -44,12 +55,10 @@ const LevelEditor = () => {
     setPos(updateLevelView(pos, event.key));
   const moveLevelByArrowClick = (direction: string) =>
     setPos(updateLevelView(pos, direction));
-  const chooseTile = (tile: TileSelected) => setSelectedTile(tile);
-  const modifyLevel = (map) => setLevel(map);
-  const saveLevel = () => {
-    saveLevelToFile(level);
-  };
-
+  const chooseTile: ChooseTileFn = (tile) => setSelectedTile(tile);
+  const modifyLevel: ModifyLevelFn = (level) => setLevel(level);
+  const saveLevel = () => saveLevelToFile(level, fileName);
+  const resetLevel = () => modifyLevel(initLevel());
   useEffect(() => {
     graphics.onload = () => setIsLoadingAssets(false);
   });
@@ -96,7 +105,14 @@ const LevelEditor = () => {
           graphics={graphics}
         />
         <p>
+          <input
+            value={fileName}
+            placeholder="file-name.level"
+            onChange={(event) => setFilename(event.target.value)}
+          />
           <button onClick={saveLevel}>SAVE LEVEL</button>
+          <span className="separator"> | </span>
+          <button onClick={resetLevel}>RESET LEVEL</button>
         </p>
       </div>
     </div>

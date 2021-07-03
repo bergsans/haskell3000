@@ -6,10 +6,11 @@ import           GameLoop
 import           System.IO
 
 main ∷ IO ()
-main = do
-  j ← openFile "your-level.json" ReadMode
-  contents ← hGetContents j
-  let t = splitOn "," contents
-  print contents
-  print t
+main
+  --j ← openFile "1.level" ReadMode
+  --contents ← hGetContents j
+  --let t = splitOn "," contents
+  --print contents
+  --print t
+ = do
   gameLoop
