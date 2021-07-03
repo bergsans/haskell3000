@@ -1,0 +1,7 @@
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/0.yaml
+packages:
+- .
+extra-deps:
+  - gloss-1.13.1.2
+  - split-0.2.3.4
