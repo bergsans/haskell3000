@@ -16,7 +16,7 @@ import {
   getTiles,
   getGraphics,
 } from "./helpers";
-import { tileSize } from "./constants";
+import { TILE_SIZE } from "./constants";
 
 import arrowLeft from "./assets/arrow-left.png";
 import arrowRight from "./assets/arrow-right.png";
@@ -24,21 +24,23 @@ import arrowRight from "./assets/arrow-right.png";
 function updateLevelView(
   pos: Vector2dLevel,
   keyboardAction: string | null = null,
-  tileSize: number = 48,
+  TILE_SIZE: number = 48,
   levelWidth: number = 48
 ): Vector2dLevel {
   if (keyboardAction === "ArrowRight") {
     pos.x =
-      pos.x + tileSize <= levelWidth * tileSize ? (pos.x += tileSize) : pos.x;
+      pos.x + TILE_SIZE <= levelWidth * TILE_SIZE
+        ? (pos.x += TILE_SIZE)
+        : pos.x;
   } else if (keyboardAction === "ArrowLeft") {
-    pos.x = pos.x - tileSize >= 0 ? (pos.x -= tileSize) : pos.x;
+    pos.x = pos.x - TILE_SIZE >= 0 ? (pos.x -= TILE_SIZE) : pos.x;
   }
   return { x: pos.x, y: pos.y };
 }
 
 const LevelEditor = () => {
   const graphics = getGraphics();
-  const tiles: ImagePosition[][] = getTiles(768, 384, tileSize);
+  const tiles: ImagePosition[][] = getTiles(768, 384, TILE_SIZE);
   const types: object = getTypes(tiles);
 
   const [isLoadingAssets, setIsLoadingAssets] = useState<boolean>(true);

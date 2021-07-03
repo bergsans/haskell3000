@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { getMousePosition, clear } from "./helpers";
-import { tileSize } from "./constants";
+import { TILE_SIZE } from "./constants";
 import { TilesElement, TileSelected, ImagePosition } from "./interfaces";
 
 function selectTileType(
   selectedTile: TileSelected,
   position: ImagePosition,
   types: object,
-  tileSize: number = 48
+  TILE_SIZE: number = 48
 ): TileSelected {
   const typeIndex: number = Object.values(types).findIndex(
     (tile) =>
-      tile.x / tileSize === position.x && tile.y / tileSize === position.y
+      tile.x / TILE_SIZE === position.x && tile.y / TILE_SIZE === position.y
   );
   if (typeIndex >= 0) {
     return {
-      x: types[typeIndex].x / tileSize,
-      y: types[typeIndex].y / tileSize,
+      x: types[typeIndex].x / TILE_SIZE,
+      y: types[typeIndex].y / TILE_SIZE,
       type: typeIndex.toString(),
     };
   }
@@ -28,7 +28,7 @@ function drawTilesUI(
   context: CanvasRenderingContext2D,
   selectedTile: TileSelected,
   tiles: Array<{ x: number; y: number }[]>,
-  tileSize: number = 48
+  TILE_SIZE: number = 48
 ) {
   tiles.forEach((row, i) =>
     row.forEach((tileType, j) => {
@@ -36,19 +36,19 @@ function drawTilesUI(
         graphics,
         tileType.x,
         tileType.y,
-        tileSize,
-        tileSize,
+        TILE_SIZE,
+        TILE_SIZE,
         tileType.x + (j % 5) + 1,
         tileType.y + (i % 11) + 1,
-        tileSize,
-        tileSize
+        TILE_SIZE,
+        TILE_SIZE
       );
       if (i === selectedTile.y && j === selectedTile.x) {
         context.lineWidth = 2;
         context.strokeStyle = "red";
         const x: number = tileType.x + (j % 5);
         const y: number = tileType.y + (i % 11);
-        context.strokeRect(x, y, tileSize, tileSize);
+        context.strokeRect(x, y, TILE_SIZE, TILE_SIZE);
       }
     })
   );
@@ -70,7 +70,7 @@ const Tiles = ({
         return { x: currentTile.x, y: currentTile.y };
       }
       const canvasTiles: HTMLCanvasElement = canvasTilesRef.current;
-      return getMousePosition(event, canvasTiles, tileSize);
+      return getMousePosition(event, canvasTiles, TILE_SIZE);
     },
     [canvasTilesRef, currentTile]
   );

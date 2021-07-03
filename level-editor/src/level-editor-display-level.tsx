@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { LevelElement, ImagePosition } from "./interfaces";
 import { getMousePosition, drawLevel } from "./helpers";
-import { tileSize } from "./constants";
+import { TILE_SIZE } from "./constants";
 
 function changeLevel(
   map: string[][],
   pos: ImagePosition,
   imagePos: ImagePosition,
   selectedTileType: string,
-  tileSize: number
+  TILE_SIZE: number
 ): string[][] {
   let newMap = [...map];
-  const xPos: number = Math.floor(pos.x / tileSize);
+  const xPos: number = Math.floor(pos.x / TILE_SIZE);
   newMap[imagePos.y][imagePos.x + xPos] = selectedTileType;
   return newMap;
 }
@@ -33,7 +33,7 @@ const Level = ({
         return;
       }
       const canvasLevel: HTMLCanvasElement = canvasLevelRef.current;
-      return getMousePosition(event, canvasLevel, tileSize);
+      return getMousePosition(event, canvasLevel, TILE_SIZE);
     },
     [canvasLevelRef]
   );
@@ -43,7 +43,7 @@ const Level = ({
       const imagePosition: ImagePosition | undefined = getCoords(event);
       if (imagePosition) {
         modifyLevel(
-          changeLevel(level, pos, imagePosition, currentTile.type, tileSize)
+          changeLevel(level, pos, imagePosition, currentTile.type, TILE_SIZE)
         );
       }
     },

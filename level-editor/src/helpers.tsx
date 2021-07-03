@@ -10,14 +10,14 @@ export function getGraphics() {
 export function getMousePosition(
   event: MouseEvent,
   element: HTMLCanvasElement,
-  tileSize: number
+  TILE_SIZE: number
 ): ImagePosition {
   const position: ClientRect = element.getBoundingClientRect();
   const x: number = Math.abs(
-    Math.round((event.clientX - position.left) / tileSize - 1)
+    Math.round((event.clientX - position.left) / TILE_SIZE - 1)
   );
   const y: number = Math.abs(
-    Math.round((event.clientY - position.top) / tileSize - 1)
+    Math.round((event.clientY - position.top) / TILE_SIZE - 1)
   );
   return { x, y };
 }
@@ -34,12 +34,12 @@ export function clear(
 export function getTiles(
   w: number,
   h: number,
-  tileSize: number
+  TILE_SIZE: number
 ): ImagePosition[][] {
-  return Array.from({ length: h / tileSize }, (_, i) =>
-    Array.from({ length: w / tileSize }, (__, j) => ({
-      x: j * tileSize,
-      y: i * tileSize,
+  return Array.from({ length: h / TILE_SIZE }, (_, i) =>
+    Array.from({ length: w / TILE_SIZE }, (__, j) => ({
+      x: j * TILE_SIZE,
+      y: i * TILE_SIZE,
     }))
   );
 }
@@ -53,10 +53,10 @@ export function getTypes(tiles: ImagePosition[][]): object {
 export function initLevel(
   w: number = 1024 * 2,
   h: number = 768,
-  tileSize: number = 48
+  TILE_SIZE: number = 48
 ): Level {
-  return Array.from({ length: h / tileSize }, (_) =>
-    Array.from({ length: w / tileSize }, (__) => "13")
+  return Array.from({ length: h / TILE_SIZE }, (_) =>
+    Array.from({ length: w / TILE_SIZE }, (__) => "13")
   );
 }
 
@@ -66,7 +66,7 @@ export function drawLevel(
   types: object,
   pos: Vector2dLevel,
   map: string[][],
-  tileSize = 48
+  TILE_SIZE = 48
 ) {
   if (!map) {
     return;
@@ -77,12 +77,12 @@ export function drawLevel(
         graphics,
         types[tile].x,
         types[tile].y,
-        tileSize,
-        tileSize,
-        j * tileSize - pos.x > 0 ? j * tileSize - pos.x : 0,
-        i * tileSize - pos.y > 0 ? i * tileSize - pos.y : 0,
-        tileSize,
-        tileSize
+        TILE_SIZE,
+        TILE_SIZE,
+        j * TILE_SIZE - pos.x > 0 ? j * TILE_SIZE - pos.x : 0,
+        i * TILE_SIZE - pos.y > 0 ? i * TILE_SIZE - pos.y : 0,
+        TILE_SIZE,
+        TILE_SIZE
       )
     )
   );

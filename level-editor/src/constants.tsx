@@ -1,1 +1,1 @@
-export const tileSize = 48;
+export const TILE_SIZE = 48;
