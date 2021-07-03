@@ -14,7 +14,7 @@ type Position = (Int, Int)
 type ChFontData = [(Int, [(Int, Char)])]
 
 pixelSize ∷ Int
-pixelSize = 3
+pixelSize = 10
 
 widthBetweenChs ∷ Int
 widthBetweenChs = pixelSize
@@ -42,9 +42,10 @@ setPixel rectColor (x, y) =
   color rectColor $
   rectangleSolid (fromIntegral pixelSize) (fromIntegral pixelSize)
 
-printText ∷ Position → [Char] → [[Picture]]
+printText ∷ Position → [Char] → [Picture]
 printText pos text =
-  map (\(i, ch) → drawChar ch pos (take i text)) $ zip [0 .. length text] text
+  concatMap (\(i, ch) → drawChar ch pos (take i text)) $
+  zip [0 .. length text] text
 
 drawChar ∷ Char → Position → [Char] → [Picture]
 drawChar ch pos text =
@@ -70,7 +71,7 @@ drawPtn ∷ Position → Char → Picture
 drawPtn (x, y) ch =
   setPixel
     (if isPntFull ch
-       then black
+       then forgroundColor
        else background)
     ( fromIntegral x - ((1024 / 2) - (fromIntegral pixelSize / 2))
     , fromIntegral y - ((768 / 2) - (fromIntegral pixelSize / 2)))
