@@ -1,6 +1,5 @@
 module Text
   ( printText
-  , formatLine
   ) where
 
 import           Constants
@@ -9,12 +8,15 @@ import           Data.Maybe
 import           Font
 import           Graphics.Gloss
 
-type Position = (Int, Int)
-
 type ChFontData = [(Int, [(Int, Char)])]
 
+printText ∷ Position → [Char] → [Picture]
+printText pos text =
+  concatMap (\(i, ch) → drawChar ch pos (take i text)) $
+  zip [0 .. length text] text
+
 pixelSize ∷ Int
-pixelSize = 10
+pixelSize = 3
 
 widthBetweenChs ∷ Int
 widthBetweenChs = pixelSize
@@ -41,11 +43,6 @@ setPixel rectColor (x, y) =
   translate x y $
   color rectColor $
   rectangleSolid (fromIntegral pixelSize) (fromIntegral pixelSize)
-
-printText ∷ Position → [Char] → [Picture]
-printText pos text =
-  concatMap (\(i, ch) → drawChar ch pos (take i text)) $
-  zip [0 .. length text] text
 
 drawChar ∷ Char → Position → [Char] → [Picture]
 drawChar ch pos text =

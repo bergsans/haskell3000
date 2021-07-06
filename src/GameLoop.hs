@@ -1,34 +1,41 @@
 module GameLoop
   ( gameLoop
+  , formatLevel
+  , createLevel
   ) where
 
 import           Constants
 import           Graphics.Gloss
+import           Graphics.Gloss.Interface.Pure.Game
 import           InitGame
 import           Text
 
 data GameData =
   GameData
-    { ls     ∷ [String]
+    { ls     ∷ [Tile]
     , assets ∷ [Picture]
     }
   deriving (Show)
 
-drawing ∷ Picture -- [Picture] → Picture
-drawing = pictures $ printText (10, 10) "Hello"
-  --([translate 0 0 (head pic)] ++ [translate 0 0 (pic !! 1)])
+drawTile ∷ Tile → Picture → Picture
+drawTile ((x, y), t) = uncurry translate (fromIntegral x, fromIntegral y)
+
+render ∷ GameData → Picture
+render gs =
+  pictures $
+  [drawTile cell (assets gs !! read (snd cell)) | cell ← ls gs] ++
+  printText (0, 0) "Hello"
+
+handleKeys ∷ Event → GameData → GameData
+handleKeys ev gs = gs
+
+update ∷ Float → GameData → GameData
+update _ gs = gs
 
 gameLoop ∷ IO ()
-gameLoop
-  --pics ← traverse loadBMP bmps
-  --let gameData = GameData {ls = levelData, assets = pics}
-  --print $ show gameData
- = do
-  play
-    window
-    background
-    fps
-    undefined
-    (\_ → drawing) -- $ assets gameData)
-    (\event _ → show event)
-    (\_ world → world)
+gameLoop = do
+  pics ← traverse loadBMP bmps
+  rawLevel ← readFile $ head levelData
+  let level = createLevel rawLevel
+  let state = GameData {ls = level, assets = pics}
+  play window background fps state render handleKeys update
