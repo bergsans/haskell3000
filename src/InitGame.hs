@@ -1,5 +1,7 @@
 module InitGame
-  ( bmps
+  ( bmpsTiles
+  , bmpsAstronautLeft
+  , bmpsAstronautRight
   , levelData
   , fps
   , window
@@ -18,8 +20,16 @@ getNumber x
   | x > 9 && x < 100 = "0" ++ show x
   | otherwise = show x
 
-bmps ∷ [String]
-bmps = ["assets/tiles/tile" ++ getNumber x ++ ".bmp" | x ← [0 .. 127]]
+bmpsTiles ∷ [String]
+bmpsTiles = ["assets/tiles/tile" ++ getNumber x ++ ".bmp" | x ← [0 .. 127]]
+
+bmpsAstronautLeft ∷ [String]
+bmpsAstronautLeft =
+  ["assets/astronaut/left/tile" ++ getNumber x ++ ".bmp" | x ← [0 .. 15]]
+
+bmpsAstronautRight ∷ [String]
+bmpsAstronautRight =
+  ["assets/astronaut/right/tile" ++ getNumber x ++ ".bmp" | x ← [0 .. 15]]
 
 levelData ∷ [String]
 levelData = ["data/1.level"]

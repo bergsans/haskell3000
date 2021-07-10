@@ -19,7 +19,7 @@ pixelSize ∷ Int
 pixelSize = 3
 
 widthBetweenChs ∷ Int
-widthBetweenChs = pixelSize
+widthBetweenChs = 1
 
 formatLine ∷ [a] → [(Int, a)]
 formatLine lns = zip [0 .. length lns] lns

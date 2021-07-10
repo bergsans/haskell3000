@@ -5,6 +5,13 @@ module Constants
   , Position
   , TileType
   , Tile
+  , astronautIdle
+  , astronautWalk
+  , astronautShoot
+  , astronautJumpCompress
+  , astronautJumpAscend
+  , astronautJumpDescend
+  , astronautJumpLand
   ) where
 
 import           Graphics.Gloss
@@ -23,3 +30,17 @@ type Position = (Int, Int)
 type TileType = String
 
 type Tile = (Position, TileType)
+
+astronautIdle = [1, 2]
+
+astronautWalk = [4, 5]
+
+astronautShoot = [3]
+
+astronautJumpCompress = [6]
+
+astronautJumpAscend = [7]
+
+astronautJumpDescend = [8]
+
+astronautJumpLand = [9]
