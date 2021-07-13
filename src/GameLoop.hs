@@ -125,42 +125,41 @@ handleKeys ∷ Event → GameState → GameState
 handleKeys (EventKey (SpecialKey KeyLeft) Down _ _) gs =
   gs
     { keyEvents = Map.insert "KeyLeft" True (keyEvents gs)
-    , velX = -2
-    , direction = West
-    , heading = GameLoop.Left
-    , state = Walk
     }
 handleKeys (EventKey (SpecialKey KeyLeft) Up _ _) gs =
   gs
     { keyEvents = Map.insert "KeyLeft" False (keyEvents gs)
-    , velX = 0
-    , direction = None
-    , heading = GameLoop.Left
-    , state = Idle
     }
 handleKeys (EventKey (SpecialKey KeyRight) Down _ _) gs =
   gs
     { keyEvents = Map.insert "KeyRight" True (keyEvents gs)
-    , velX = 2
-    , direction = West
-    , heading = GameLoop.Right
-    , state = Walk
     }
 handleKeys (EventKey (SpecialKey KeyRight) Up _ _) gs =
   gs
     { keyEvents = Map.insert "KeyRight" False (keyEvents gs)
-    , velX = 0
-    , direction = None
-    , heading = GameLoop.Right
-    , state = Idle
     }
 handleKeys _ gs = gs
 
-updateX gs =
-  if velX gs /= 0
-    then ((fst $ pos gs) + (velX gs), snd $ pos gs)
-    else pos gs
+isKeyLeft ∷ GameState → Bool
+isKeyLeft gs = Map.lookup "KeyLeft" (keyEvents gs) == Just True
 
+isKeyRight ∷ GameState → Bool
+isKeyRight gs = Map.lookup "KeyRight"(keyEvents gs) == Just True
+
+getVelX ∷ GameState → Int
+getVelX gs
+  | (isKeyLeft gs) == True = -2
+  | (isKeyRight gs) == True = 2
+  | otherwise = 0
+
+updateX ∷ GameState → Position
+updateX gs =
+  if x /= 0
+    then ((fst $ pos gs) + x , snd $ pos gs)
+    else pos gs
+  where x = (getVelX gs)
+
+updateSpriteCount ∷ GameState → Int
 updateSpriteCount gs
   | state gs == Idle =
     if (spriteCount gs) + 1 >= 60
@@ -172,8 +171,16 @@ updateSpriteCount gs
       else (spriteCount gs) + 4
   | otherwise = 0
 
+getHeading gs
+  | getVelX gs /= 0 = if getVelX gs < 0 then GameLoop.Left else GameLoop.Right
+  | otherwise = heading gs
+
+getState gs
+  | getVelX gs /= 0 = Walk
+  | otherwise = Idle
+
 update ∷ Float → GameState → GameState
-update _ gs = gs {pos = updateX gs, spriteCount = updateSpriteCount gs}
+update _ gs = gs {pos = updateX gs, spriteCount = updateSpriteCount gs, heading = getHeading gs, state = getState gs }
 
 initialState ∷ GameState
 initialState =
