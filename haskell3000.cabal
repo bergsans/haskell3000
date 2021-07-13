@@ -30,6 +30,9 @@ library
     , InitGame
     , Constants
     , Text
+    , Update
+    , HandleKeys
+    , Render
   other-modules:
       Paths_haskell3000
   hs-source-dirs:

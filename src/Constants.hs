@@ -12,8 +12,16 @@ module Constants
   , astronautJumpAscend
   , astronautJumpDescend
   , astronautJumpLand
+  , keys
+  , GameState (..)
+  , AstronautGraphics (..)
+  , Graphics (..)
+  , Heading (..)
+  , PlayerState (..)
+  , PlrDirection (..)
   ) where
 
+import qualified Data.Map                           as Map
 import           Graphics.Gloss
 
 forgroundColor ∷ Color
@@ -44,3 +52,56 @@ astronautJumpAscend = [7]
 astronautJumpDescend = [8]
 
 astronautJumpLand = [9]
+
+keys ∷ GameKeys
+keys =
+  Map.fromList [("KeyLeft", False), ("KeyRight", False), ("KeySpace", False)]
+
+data Heading
+  = Left
+  | Right
+  deriving (Show, Eq)
+
+data PlrDirection
+  = West
+  | East
+  | North
+  | South
+  | None
+  deriving (Show)
+
+data AstronautGraphics =
+  AstronautGraphics
+    { left  ∷ [Picture]
+    , right ∷ [Picture]
+    }
+  deriving (Show)
+
+data Graphics =
+  Graphics
+    { tiles     ∷ [Picture]
+    , astronaut ∷ AstronautGraphics
+    }
+  deriving (Show)
+
+data PlayerState
+  = Idle
+  | Walk
+  deriving (Show, Eq)
+
+type GameKeys = Map.Map String Bool
+
+data GameState =
+  GameState
+    { ls          ∷ [Tile]
+    , assets      ∷ Graphics
+    , heading     ∷ Heading
+    , velX        ∷ Int
+    , spriteCount ∷ Int
+    , velY        ∷ Int
+    , state       ∷ PlayerState
+    , direction   ∷ PlrDirection
+    , pos         ∷ Position
+    , keyEvents   ∷ GameKeys
+    }
+  deriving (Show)
