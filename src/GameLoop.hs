@@ -5,13 +5,8 @@ module GameLoop
   ) where
 
 import           Constants
--- import           Data.Char                          (toUpper)
--- import qualified Data.Map                           as Map
--- import           Data.Maybe
 import           Graphics.Gloss
--- import           Graphics.Gloss.Interface.Pure.Game
 import           InitGame
--- import           Text
 import           Render
 import           Update
 import           HandleKeys
@@ -27,7 +22,7 @@ initialState =
     , state = Constants.Idle
     , velX = 0
     , velY = 0
-    , pos = (0, 0)
+    , pos = (0, 100)
     , spriteCount = 0
     , keyEvents = keys
     , direction = East

@@ -19,6 +19,9 @@ module Constants
   , Heading (..)
   , PlayerState (..)
   , PlrDirection (..)
+  , obstacles
+  , speed
+  , gravity
   ) where
 
 import qualified Data.Map                           as Map
@@ -32,6 +35,12 @@ background = black -- makeColorI 199 240 216 255
 
 tileSize ∷ Int
 tileSize = 48
+
+speed ∷ Float
+speed = 2.0
+
+gravity ∷ Float
+gravity  = 0.4
 
 type Position = (Int, Int)
 
@@ -55,7 +64,7 @@ astronautJumpLand = [9]
 
 keys ∷ GameKeys
 keys =
-  Map.fromList [("KeyLeft", False), ("KeyRight", False), ("KeySpace", False)]
+  Map.fromList [("MoveRight", False), ("MoveLeft", False), ("Jump", False)]
 
 data Heading
   = Left
@@ -86,6 +95,7 @@ data Graphics =
 
 data PlayerState
   = Idle
+  | Jump
   | Walk
   deriving (Show, Eq)
 
@@ -96,12 +106,15 @@ data GameState =
     { ls          ∷ [Tile]
     , assets      ∷ Graphics
     , heading     ∷ Heading
-    , velX        ∷ Int
+    , velX        ∷ Float
     , spriteCount ∷ Int
-    , velY        ∷ Int
+    , velY        ∷ Float
     , state       ∷ PlayerState
     , direction   ∷ PlrDirection
     , pos         ∷ Position
     , keyEvents   ∷ GameKeys
     }
   deriving (Show)
+
+obstacles ∷ [String]
+obstacles = map show $ [0..6] ++ [16..22] ++ [32..36] ++ [48..52]

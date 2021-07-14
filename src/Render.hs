@@ -7,17 +7,14 @@ import qualified Data.Map                           as Map
 import           Constants
 import           Text
 
---f k gs =
-  --if Map.lookup k (keyEvents gs) == Just True
-    --then "TRUE"
-    --else "FALSE"
-    -- show $ map toUpper k ++
-
 getSpriteCount ∷ Int → Int
 getSpriteCount c
   | c < 30 = 0
   | c >= 30 && c < 60 = 1
   | otherwise = 0
+
+getJumpPic ∷ GameState → Int
+getJumpPic gs = if velY gs > 0 then 7 else 8
 
 getAstronautImg ∷ GameState → Picture
 getAstronautImg gs
@@ -33,6 +30,9 @@ getAstronautImg gs
            (4 + getSpriteCount (spriteCount gs))
       else (right $ astronaut $ getAssets gs) !!
            (4 + getSpriteCount (spriteCount gs))
+  | state gs == Jump = if heading gs == Constants.Left
+      then (left $ astronaut $ getAssets gs) !! (getJumpPic gs)
+      else (right $ astronaut $ getAssets gs) !! (getJumpPic gs)
   | otherwise =
     if heading gs == Constants.Left
       then (left $ astronaut $ getAssets gs) !! 1
