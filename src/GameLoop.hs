@@ -17,10 +17,11 @@ initialState =
     { ls = []
     , assets =
         Graphics
-          {tiles = [], other = [], astronaut = AstronautGraphics {left = [], right = []}}
+          {tiles = [],  other = [], astronaut = AstronautGraphics {left = [], right = []}}
     , heading = Constants.Right
     , state = Constants.Idle
     , shots = []
+    , isShooting = False
     , velX = 0
     , velY = 0
     , pos = (0, 100)

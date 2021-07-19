@@ -54,8 +54,8 @@ astronautIdle = [1, 2]
 
 astronautWalk = [4, 5]
 
-astronautShot ∷ [Int]
-astronautShot = [3]
+astronautShot :: Int
+astronautShot = 2
 
 astronautJumpCompress = [6]
 
@@ -108,12 +108,13 @@ data PlayerState
 
 type GameKeys = Map.Map String Bool
 
-type Shot = ((Int, Int), Bool)
+type Shot = ((Int, Int), Bool, Heading)
 
 data GameState =
   GameState
     { ls          ∷ [Tile]
     , assets      ∷ Graphics
+    , isShooting  :: Bool
     , shots       ∷ [Shot]
     , heading     ∷ Heading
     , velX        ∷ Float

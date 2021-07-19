@@ -28,6 +28,7 @@ handleKeys (EventKey (Char 's') Down _ _) gs =
 handleKeys (EventKey (Char 's') Up _ _) gs =
   gs
     { keyEvents = Map.insert "Shot" False (keyEvents gs)
+    , isShooting = True
     }
 handleKeys (EventKey (SpecialKey KeySpace) Down _ _) gs =
   gs

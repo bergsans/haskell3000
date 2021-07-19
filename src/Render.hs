@@ -17,14 +17,11 @@ getSpriteCount c
 getJumpPic ∷ GameState → Int
 getJumpPic gs = if velY gs > 0 then 7 else 8
 
-getShotPic ∷ Int
-getShotPic = head astronautShot
-
 getAstronautImg ∷ GameState → Picture
 getAstronautImg gs
   | state gs == Shot = if heading gs == Constants.Left
-      then (left $ astronaut $ getAssets gs) !! 2
-      else (right $ astronaut $ getAssets gs) !! 2
+      then (left $ astronaut $ getAssets gs) !! astronautShot
+      else (right $ astronaut $ getAssets gs) !! astronautShot
   | state gs == Idle =
     if heading gs == Constants.Left
       then (left $ astronaut $ getAssets gs) !!
@@ -54,6 +51,10 @@ drawAstronaut gs =
 drawTile ∷ Tile → Picture → Picture
 drawTile ((x, y), t) = uncurry translate (fromIntegral x, fromIntegral y)
 
+getShotImg gs = (other $ getAssets gs) !! 0
+
+drawShots gs = traverse (\((x,y), act, dir) → [uncurry translate (fromIntegral x, fromIntegral y) $ getShotImg gs]) (shots gs)
+
 getAssets ∷ GameState → Graphics
 getAssets = assets
 
@@ -61,7 +62,7 @@ render ∷ GameState → Picture
 render gs =
   pictures $
   [drawTile cell (tiles graphics !! read (snd cell)) | cell ← ls gs] ++
-  drawAstronaut gs ++ printText (0, 0) keys
+  (concat $ drawShots gs) ++ drawAstronaut gs ++ printText (0, 0) keys
   where
     graphics = getAssets gs
-    keys = if isKeyShot gs then "SHOT" else "NOT SHOT"
+    keys = if isKeyShot gs then (show . length $ shots gs) else "NOT SHOT"

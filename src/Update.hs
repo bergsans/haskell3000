@@ -33,7 +33,7 @@ updateY ∷ Float → Position → Position
 updateY velY (x, y) = (x, y + floor velY)
 
 nextPos ∷ GameState → Position
-nextPos gs = updateY (velY gs + gravity) $ updateX (pos gs) (velX gs)
+nextPos gs = updateY (velY gs - gravity) $ updateX (pos gs) (velX gs)
 
 updateMovement ∷ GameState → Position
 updateMovement gs =  updateY (velY gs) $ updateX (pos gs) (velX gs)
@@ -84,8 +84,19 @@ updateVelY gs
   | isKeyJump gs = velY gs + 12
   | otherwise = 0
 
-updateIsShooting ∷ GameState → [Shot]
-updateIsShooting gs = if isKeyShot gs then shots gs ++ [(pos gs, False)] else shots gs
+updateShot ((x,y), active, dir)
+  | active && dir == Constants.Left = ((x - 6, y), active, dir)
+  | active && dir == Constants.Right = ((x + 6, y), active, dir)
+  | otherwise = ((x,y), active, dir)
+
+getX gs = fst $ pos gs
+getY gs = snd $ pos gs
+
+updateShooting ∷ GameState → [Shot]
+updateShooting gs = map updateShot ss
+  where ss = if isShooting gs then shots gs ++ [((getX gs, getY gs), True, heading gs)] else shots gs
+
+updateIsShooting gs = False
 
 update ∷ Float → GameState → GameState
-update _ gs = gs {pos = updateMovement gs, shots = updateIsShooting gs, spriteCount = updateSpriteCount gs, velX = updateVelX gs, velY = updateVelY gs, state = updateState gs }
+update _ gs = gs {pos = updateMovement gs, shots = updateShooting gs, isShooting = updateIsShooting gs, spriteCount = updateSpriteCount gs, velX = updateVelX gs, velY = updateVelY gs, state = updateState gs }
