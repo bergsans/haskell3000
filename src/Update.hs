@@ -1,4 +1,4 @@
-module Update (update) where
+module Update (update,isKeyShot) where
 
 import Constants
 import qualified Data.Map                           as Map
@@ -12,6 +12,8 @@ isKeyRight gs = Map.lookup "MoveRight" (keyEvents gs) == Just True
 isKeyJump ∷ GameState → Bool
 isKeyJump gs = Map.lookup "Jump" (keyEvents gs) == Just True
 
+isKeyShot ∷ GameState → Bool
+isKeyShot gs = Map.lookup "Shot" (keyEvents gs) == Just True
 
 isHit ∷ Position → Position → Bool
 isHit (b1x, b1y) (b2x, b2y) =
@@ -31,7 +33,7 @@ updateY ∷ Float → Position → Position
 updateY velY (x, y) = (x, y + floor velY)
 
 nextPos ∷ GameState → Position
-nextPos gs = updateY (velY gs - gravity) $ updateX (pos gs) (velX gs)
+nextPos gs = updateY (velY gs + gravity) $ updateX (pos gs) (velX gs)
 
 updateMovement ∷ GameState → Position
 updateMovement gs =  updateY (velY gs) $ updateX (pos gs) (velX gs)
@@ -53,16 +55,27 @@ getHeading gs
   | velX gs /= 0 = if velX gs < 0 then Constants.Left else Constants.Right
   | otherwise = heading gs
 
-getState ∷ GameState → PlayerState
-getState gs
+updateState ∷ GameState → PlayerState
+updateState gs
+  | isKeyShot gs = Shot
   | velY gs > 0 || velY gs < 0 = Jump
   | velX gs /= 0 = Walk
   | otherwise = Idle
 
+incMoveRight ∷ Float → Float
+incMoveRight velX
+  | velX < 2 = velX + 0.1
+  | otherwise = 2
+
+incMoveLeft ∷ Float → Float
+incMoveLeft velX
+  | velX > 0 = velX - 0.1
+  | otherwise = -2
+
 updateVelX ∷ GameState → Float
 updateVelX gs
-  | isKeyRight gs = 2
-  | isKeyLeft gs = -2
+  | isKeyRight gs = incMoveRight $ velX gs
+  | isKeyLeft gs = incMoveLeft $ velX gs
   | otherwise = 0
 
 updateVelY ∷ GameState → Float
@@ -71,5 +84,8 @@ updateVelY gs
   | isKeyJump gs = velY gs + 12
   | otherwise = 0
 
+updateIsShooting ∷ GameState → [Shot]
+updateIsShooting gs = if isKeyShot gs then shots gs ++ [(pos gs, False)] else shots gs
+
 update ∷ Float → GameState → GameState
-update _ gs = gs {pos = updateMovement gs, spriteCount = updateSpriteCount gs, velX = updateVelX gs, velY = updateVelY gs, state = getState gs }
+update _ gs = gs {pos = updateMovement gs, shots = updateIsShooting gs, spriteCount = updateSpriteCount gs, velX = updateVelX gs, velY = updateVelY gs, state = updateState gs }

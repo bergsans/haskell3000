@@ -7,7 +7,7 @@ module Constants
   , Tile
   , astronautIdle
   , astronautWalk
-  , astronautShoot
+  , astronautShot
   , astronautJumpCompress
   , astronautJumpAscend
   , astronautJumpDescend
@@ -22,6 +22,8 @@ module Constants
   , obstacles
   , speed
   , gravity
+  , projectile
+  , Shot
   ) where
 
 import qualified Data.Map                           as Map
@@ -52,7 +54,8 @@ astronautIdle = [1, 2]
 
 astronautWalk = [4, 5]
 
-astronautShoot = [3]
+astronautShot ∷ [Int]
+astronautShot = [3]
 
 astronautJumpCompress = [6]
 
@@ -61,6 +64,8 @@ astronautJumpAscend = [7]
 astronautJumpDescend = [8]
 
 astronautJumpLand = [9]
+
+projectile = [0]
 
 keys ∷ GameKeys
 keys =
@@ -90,6 +95,7 @@ data Graphics =
   Graphics
     { tiles     ∷ [Picture]
     , astronaut ∷ AstronautGraphics
+    , other ∷ [Picture]
     }
   deriving (Show)
 
@@ -97,14 +103,18 @@ data PlayerState
   = Idle
   | Jump
   | Walk
+  | Shot
   deriving (Show, Eq)
 
 type GameKeys = Map.Map String Bool
+
+type Shot = ((Int, Int), Bool)
 
 data GameState =
   GameState
     { ls          ∷ [Tile]
     , assets      ∷ Graphics
+    , shots       ∷ [Shot]
     , heading     ∷ Heading
     , velX        ∷ Float
     , spriteCount ∷ Int

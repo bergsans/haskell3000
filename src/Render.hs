@@ -6,6 +6,7 @@ import           Graphics.Gloss
 import qualified Data.Map                           as Map
 import           Constants
 import           Text
+import Update
 
 getSpriteCount ∷ Int → Int
 getSpriteCount c
@@ -16,8 +17,14 @@ getSpriteCount c
 getJumpPic ∷ GameState → Int
 getJumpPic gs = if velY gs > 0 then 7 else 8
 
+getShotPic ∷ Int
+getShotPic = head astronautShot
+
 getAstronautImg ∷ GameState → Picture
 getAstronautImg gs
+  | state gs == Shot = if heading gs == Constants.Left
+      then (left $ astronaut $ getAssets gs) !! 2
+      else (right $ astronaut $ getAssets gs) !! 2
   | state gs == Idle =
     if heading gs == Constants.Left
       then (left $ astronaut $ getAssets gs) !!
@@ -40,7 +47,7 @@ getAstronautImg gs
 
 drawAstronaut ∷ GameState → [Picture]
 drawAstronaut gs =
-  [uncurry translate (fromIntegral x, fromIntegral y) $ getAstronautImg gs]
+  [uncurry translate (fromIntegral x + 15, fromIntegral y) $ getAstronautImg gs]
   where
     (x, y) = pos gs
 
@@ -54,7 +61,7 @@ render ∷ GameState → Picture
 render gs =
   pictures $
   [drawTile cell (tiles graphics !! read (snd cell)) | cell ← ls gs] ++
-  drawAstronaut gs -- ++ printText (0, 0) keys
+  drawAstronaut gs ++ printText (0, 0) keys
   where
     graphics = getAssets gs
-    -- keys = concatMap (\x → f x gs) ["KeyLeft", "KeyRight"]
+    keys = if isKeyShot gs then "SHOT" else "NOT SHOT"

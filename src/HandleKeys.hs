@@ -21,6 +21,14 @@ handleKeys (EventKey (SpecialKey KeyRight) Up _ _) gs =
   gs
     { keyEvents = Map.insert "MoveRight" False (keyEvents gs)
     }
+handleKeys (EventKey (Char 's') Down _ _) gs =
+  gs
+    { keyEvents = Map.insert "Shot" True (keyEvents gs)
+    }
+handleKeys (EventKey (Char 's') Up _ _) gs =
+  gs
+    { keyEvents = Map.insert "Shot" False (keyEvents gs)
+    }
 handleKeys (EventKey (SpecialKey KeySpace) Down _ _) gs =
   gs
     { keyEvents = Map.insert "Jump" True (keyEvents gs)

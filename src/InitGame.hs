@@ -2,6 +2,7 @@ module InitGame
   ( bmpsTiles
   , bmpsAstronautLeft
   , bmpsAstronautRight
+  , bmpsOther
   , levelData
   , fps
   , window
@@ -30,6 +31,9 @@ bmpsAstronautLeft =
 bmpsAstronautRight ∷ [String]
 bmpsAstronautRight =
   ["assets/astronaut/right/tile" ++ getNumber x ++ ".bmp" | x ← [0 .. 15]]
+
+bmpsOther ∷ [String]
+bmpsOther = ["assets/other/projectile.bmp"]
 
 levelData ∷ [String]
 levelData = ["data/1.level"]

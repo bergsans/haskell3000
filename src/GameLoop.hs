@@ -17,9 +17,10 @@ initialState =
     { ls = []
     , assets =
         Graphics
-          {tiles = [], astronaut = AstronautGraphics {left = [], right = []}}
+          {tiles = [], other = [], astronaut = AstronautGraphics {left = [], right = []}}
     , heading = Constants.Right
     , state = Constants.Idle
+    , shots = []
     , velX = 0
     , velY = 0
     , pos = (0, 100)
@@ -35,8 +36,9 @@ gameLoop = do
   tileImgs ← traverse loadBMP bmpsTiles
   astronautLeft ← traverse loadBMP bmpsAstronautLeft
   astronautRight ← traverse loadBMP bmpsAstronautRight
+  otherImgs ← traverse loadBMP bmpsOther
   let astronautImgs =
         AstronautGraphics {left = astronautLeft, right = astronautRight}
-  let graphics = Graphics {tiles = tileImgs, astronaut = astronautImgs}
+  let graphics = Graphics {tiles = tileImgs, astronaut = astronautImgs, other = otherImgs}
   let state = initialState {ls = level, assets = graphics}
   play window background fps state render handleKeys update
